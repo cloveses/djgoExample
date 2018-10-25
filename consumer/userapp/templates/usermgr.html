@@ -1,0 +1,12 @@
+{% extends 'base.html'%}
+{% block “content“ %}
+    {% for d in datas %}
+    <p>{{d.name}}&nbsp;{{d.department}}&nbsp;{{d.get_role_display}} &nbsp; <a href="{% url 'deluser' d.id %}">Del</a> </p>
+    {% endfor %}
+
+    <form action="{% url 'adduser' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="保存" />
+    </form>
+{% endblock%}

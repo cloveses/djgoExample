@@ -1,0 +1,7 @@
+{% extends 'base.html'%}
+{% block “content“ %}
+    {% for d in datas %}
+    <p>{{d.name}}&nbsp; <a href="{% url 'add_enter_hospital' d.id %}">填写入院信息</a> </p>
+    {% endfor %}
+
+{% endblock%}

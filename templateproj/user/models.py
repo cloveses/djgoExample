@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth import get_user_model
+import datetime
 # import settings
 
 # Create your models here.
@@ -67,3 +68,29 @@ class Department(models.Model):
 
     def __str__(self):
         return self.name
+
+
+# 多对实例
+class Girl(models.Model):
+    name = models.CharField(max_length=20)
+
+class Boy(models.Model):
+    name = models.CharField(max_length=20)
+    friends = models.ManyToManyField('Girl')
+# 操作时先保存双方实例，最后使用boy.friends.add(girl)
+
+
+# 多对多实例（通过第三张表）
+class Girlb(models.Model):
+    name = models.CharField(max_length=20)
+
+class Boyb(models.Model):
+    name = models.CharField(max_length=20)
+    friends = models.ManyToManyField(Girlb, through='Friend')
+
+class Friend(models.Model):
+    girlb = models.ForeignKey(Girlb, on_delete=models.CASCADE)
+    boyb = models.ForeignKey(Boyb, on_delete=models.CASCADE)
+    date = models.DateTimeField(default=datetime.datetime.now())
+
+# 操作时先保存双方实例，最后建立第三方实例并保存Friend(girlb=g,boyb=b).save()
